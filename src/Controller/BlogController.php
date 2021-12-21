@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\PictureRepository;
+use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/blog", name="blog")
+     * @Route("/figures", name="figures")
      */
     public function index(): Response
     {
@@ -21,9 +23,12 @@ class BlogController extends AbstractController
     /**
      * @Route ("/", name= "home")
      */
-    public function home()
+    public function home(TrickRepository $trickRepository, PictureRepository $pictureRepository)
     {
-        return $this->render('blog/home.html.twig');
+        return $this->render('blog/home.html.twig', [
+                'tricks' => $trickRepository->findAll(),
+                'pictures' => $pictureRepository->findAll(),
+            ]);
     }
 
     /**

@@ -7,6 +7,9 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
+ALT+Z to break lines
+CTRL+D multiple cursor
+
 Pour importer automatiquement une classe :
 
 Extension Php namespace resolver
