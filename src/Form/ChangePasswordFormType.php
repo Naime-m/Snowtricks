@@ -30,11 +30,11 @@ class ChangePasswordFormType extends AbstractType
                             'max' => 4096,
                         ]),
                     ],
-                    'label' => 'Nouveau mot de passe',
+                    'label' => 'New password',
                 ],
                 'second_options' => [
                     'attr' => ['autocomplete' => 'new-password'],
-                    'label' => 'Répétez le mot de passe',
+                    'label' => 'Repeat the password',
                 ],
                 'invalid_message' => 'Les mots de passe doivent correspondre.',
                 // Instead of being set onto the object directly,

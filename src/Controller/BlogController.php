@@ -2,33 +2,61 @@
 
 namespace App\Controller;
 
-use App\Repository\PictureRepository;
+use App\Entity\Trick;
+use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/figures", name="figures")
+     * @Route ("/", name= "home")
      */
-    public function index(): Response
+    public function home(TrickRepository $trickRepository)
     {
         return $this->render('blog/index.html.twig', [
-            'controller_name' => 'BlogController',
+                'tricks' => $trickRepository->findAll(),
+            ]);
+    }
+
+    /**
+     * @Route("/trick/new", name= "trick_new")
+     */
+    public function new(Request $request, ManagerRegistry $entityManager): Response
+    {
+        $trick = new Trick();
+
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trick->setDate(new \DateTime());
+
+            $manager = $entityManager->getManager();
+            $manager->persist($trick);
+            $manager->flush();
+
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
+
+        return $this->renderForm('blog/new.html.twig', [
+        'formTrick' => $form,
         ]);
     }
 
     /**
-     * @Route ("/", name= "home")
+     * @Route("/trick/{id}", name="trick_show")
      */
-    public function home(TrickRepository $trickRepository, PictureRepository $pictureRepository)
+    public function show(Trick $trick)
     {
-        return $this->render('blog/home.html.twig', [
-                'tricks' => $trickRepository->findAll(),
-                'pictures' => $pictureRepository->findAll(),
-            ]);
+        return $this->render('blog/show.html.twig', [
+            'trick' => $trick,
+        ]);
     }
 
     /**

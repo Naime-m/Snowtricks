@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% form_theme formTrick 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+{{ form_start(formTrick) }}
+{{ form_row(formTrick.name, { 'label': 'Nom de la figure' }) }}
+{{ form_row(formTrick.description) }}
+{{ form_row(formTrick.category, { 'label': 'Catégorie' }) }}
+<button type="submit" class="btn btn-success">Ajouter la figure</button>
+{{ form_end(formTrick) }}
+
+{% endblock %}

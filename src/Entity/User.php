@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Picture::class, inversedBy="users")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $picture;
 
@@ -160,12 +160,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPicture(): ?Picture
+    public function getPicture(): ?string
     {
         return $this->picture;
     }
 
-    public function setPicture(?Picture $picture): self
+    public function setPicture(?string $picture): self
     {
         $this->picture = $picture;
 

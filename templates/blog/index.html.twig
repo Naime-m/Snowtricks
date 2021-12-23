@@ -1,19 +1,18 @@
 {% extends 'base.html.twig' %}
 
-
-
 {% block body %}
 
-	<section class="tricks">
-			<article>
-				<h2> {{ trick.title }} </h2>
-				<div class="metadata">Ecrit le {{ trick.date | date('d/m/Y') }} à {{ trick.date | date('H:i') }} dans la catégorie {{ trick.category}}</div>
-				<div class="content">
-					<img src="{ trick.image}}" alt="">
-					{{ trick.content | raw }}
-					<a href="{{ path('blog_show', {id: trick.id} ) }}" class="btn btn-primary">Lire la suite</a>
-				</div>
-			</article>
-	</section>
+	<img src="https://cdn.pixabay.com/photo/2021/08/12/10/38/mountains-6540497_960_720.jpg" alt="montagne">
+
+	
+		{% for trick in tricks %}
+				<img src="http://placehold.it/200x100" alt="placeholder">
+				<a href="{{path ('trick_show', {'id': trick.id}) }}">
+					<h1>{{ trick.name }}</h1>
+				</a>
+			
+		
+	{% endfor %}
+
 
 {% endblock %}
