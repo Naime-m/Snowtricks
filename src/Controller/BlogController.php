@@ -25,6 +25,7 @@ class BlogController extends AbstractController
 
     /**
      * @Route("/trick/new", name= "trick_new")
+     * @Route("/trick/{id}/edit", name="trick_edit)
      */
     public function new(Request $request, ManagerRegistry $entityManager): Response
     {
@@ -35,7 +36,9 @@ class BlogController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setDate(new \DateTime());
+            if (!$trick->getId()) {
+                $trick->setDate(new \DateTime());
+            }
 
             $manager = $entityManager->getManager();
             $manager->persist($trick);
@@ -46,6 +49,7 @@ class BlogController extends AbstractController
 
         return $this->renderForm('blog/new.html.twig', [
         'formTrick' => $form,
+        'editMode' => null !== $trick->getId(),
         ]);
     }
 
