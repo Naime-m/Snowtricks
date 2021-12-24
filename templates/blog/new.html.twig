@@ -3,11 +3,25 @@
 
 {% block body %}
 
+{% if editMode %}
+<h1>Modification d'une figure</h1>
+{% else %}
+<h1>Création d'une figure</h1>
+{% endif %}
+
 {{ form_start(formTrick) }}
 {{ form_row(formTrick.name, { 'label': 'Nom de la figure' }) }}
 {{ form_row(formTrick.description) }}
 {{ form_row(formTrick.category, { 'label': 'Catégorie' }) }}
-<button type="submit" class="btn btn-success">Ajouter la figure</button>
+
+<button type="submit" class="btn btn-success">
+{% if editMode %}
+Enregistrer
+{% else %}
+Ajouter la figure</button>
+{{% endif %}}
+
+
 {{ form_end(formTrick) }}
 
 {% endblock %}
