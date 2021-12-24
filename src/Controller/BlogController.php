@@ -24,8 +24,18 @@ class BlogController extends AbstractController
     }
 
     /**
+     * @Route("/trick/{id}/show", name="trick_show")
+     */
+    public function show(Trick $trick)
+    {
+        return $this->render('blog/show.html.twig', [
+            'trick' => $trick,
+        ]);
+    }
+
+    /**
      * @Route("/trick/new", name= "trick_new")
-     * @Route("/trick/{id}/edit", name="trick_edit)
+     * @Route("/trick/{id}/edit", name="trick_edit")
      */
     public function new(Request $request, ManagerRegistry $entityManager): Response
     {
@@ -50,16 +60,6 @@ class BlogController extends AbstractController
         return $this->renderForm('blog/new.html.twig', [
         'formTrick' => $form,
         'editMode' => null !== $trick->getId(),
-        ]);
-    }
-
-    /**
-     * @Route("/trick/{id}", name="trick_show")
-     */
-    public function show(Trick $trick)
-    {
-        return $this->render('blog/show.html.twig', [
-            'trick' => $trick,
         ]);
     }
 
