@@ -37,9 +37,11 @@ class BlogController extends AbstractController
      * @Route("/trick/new", name= "trick_new")
      * @Route("/trick/{id}/edit", name="trick_edit")
      */
-    public function new(Request $request, ManagerRegistry $entityManager): Response
+    public function new(Trick $trick, Request $request, ManagerRegistry $entityManager): Response
     {
-        $trick = new Trick();
+        if (!$trick) {
+            $trick = new Trick();
+        }
 
         $form = $this->createForm(TrickType::class, $trick);
 
