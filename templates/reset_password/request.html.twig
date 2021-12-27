@@ -9,10 +9,10 @@
     <h1>Réinitialisez votre mot de passe</h1>
 
     {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
+        {{ form_row(requestForm.username, { 'label': 'Nom d\'utilisateur' }) }}
         <div>
             <small>
-                Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe
+                Entrez votre nom d'utilisateur et nous vous enverrons un lien pour réinitialiser votre mot de passe
             </small>
         </div>
 
