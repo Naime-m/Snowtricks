@@ -43,6 +43,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $pictureFilename;
+
+    public function getPictureFilename()
+    {
+        return $this->pictureFilename;
+    }
+
+    public function setPictureFilename($pictureFilename)
+    {
+        $this->pictureFilename = $pictureFilename;
+
+        return $this;
+    }
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $isVerified = false;
