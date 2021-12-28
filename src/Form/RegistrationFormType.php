@@ -44,9 +44,10 @@ class RegistrationFormType extends AbstractType
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
-                            'image/jpeg',
+                            'application/jpg',
+                            'application/x-jpg',
                         ],
-                        'mimeTypesMessage' => 'Veuillez choisir un fichier JPG valide',
+                        'mimeTypesMessage' => 'Please upload a valid JPG document',
                     ]),
                 ],
             ])

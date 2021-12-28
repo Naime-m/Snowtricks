@@ -43,14 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string")
      */
-    private $isVerified = false;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $picture;
+    private $pictureFilename;
 
     public function getPictureFilename()
     {
@@ -63,6 +58,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $picture;
 
     public function getId(): ?int
     {
