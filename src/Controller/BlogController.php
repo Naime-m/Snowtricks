@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Picture;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
@@ -42,13 +41,6 @@ class BlogController extends AbstractController
     {
         if (!$trick) {
             $trick = new Trick();
-
-            $tag1 = new Picture();
-            $tag1->setLink('tag1');
-            $trick->addPicture($tag1);
-            $tag2 = new Picture();
-            $tag2->setLink('tag2');
-            $trick->addPicture($tag2);
         }
 
         $form = $this->createForm(TrickType::class, $trick);
