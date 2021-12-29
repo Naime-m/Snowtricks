@@ -52,18 +52,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $picture;
 
-    public function getPictureFilename()
-    {
-        return $this->pictureFilename;
-    }
-
-    public function setPictureFilename($pictureFilename)
-    {
-        $this->pictureFilename = $pictureFilename;
-
-        return $this;
-    }
-
     public function getId(): ?int
     {
         return $this->id;

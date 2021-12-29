@@ -40,7 +40,7 @@ class RegistrationController extends AbstractController
             $pictureFile = $form->get('picture')->getData();
             if ($pictureFile) {
                 $pictureFileName = $fileUploader->upload($pictureFile);
-                $user->setPictureFilename($pictureFileName);
+                $user->setPicture($pictureFileName);
 
                 // encode the plain password
                 $user->setPassword(
