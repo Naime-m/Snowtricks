@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Picture;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use App\Service\FileUploader;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +40,7 @@ class BlogController extends AbstractController
      * @Route("/trick/new", name= "trick_new")
      * @Route("/trick/{id}/edit", name="trick_edit")
      */
-    public function new(Trick $trick = null, Request $request, ManagerRegistry $entityManager): Response
+    public function new(Trick $trick = null, Request $request, ManagerRegistry $entityManager, FileUploader $fileUploader): Response
     {
         if (!$trick) {
             $trick = new Trick();
@@ -50,6 +53,20 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$trick->getId()) {
                 $trick->setDate(new \DateTime());
+            }
+
+            $trick->deleteAllPictures();
+            $pictures = $form->get('pictures');
+            foreach ($pictures as $key => $picture) {
+                /** @var UploadedFile $pictureFile */
+                $pictureFile = $picture->get('link')->getData();
+                if ($pictureFile) {
+                    $pictureFileName = $fileUploader->upload($pictureFile);
+                    $pict = new Picture();
+                    $pict->setLink($pictureFileName);
+                    $pict->setTrick($trick);
+                    $trick->addPicture($pict);
+                }
             }
 
             $manager = $entityManager->getManager();

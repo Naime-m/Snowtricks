@@ -110,6 +110,11 @@ class Trick
         return $this->pictures;
     }
 
+    public function deleteAllPictures()
+    {
+        $this->pictures = new ArrayCollection();
+    }
+
     public function addPicture(Picture $picture): self
     {
         if (!$this->pictures->contains($picture)) {
