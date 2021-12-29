@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 {% form_theme formTrick 'bootstrap_5_layout.html.twig' %}
 
+
 {% block body %}
 
+<script>document
+  .querySelectorAll('.add_item_link')
+  .forEach(btn => btn.addEventListener("click", addFormToCollection));</script>
+  
 {% if editMode %}
 <h1>Modification d'une figure</h1>
 {% else %}
@@ -14,11 +19,19 @@
 {{ form_row(formTrick.description) }}
 {{ form_row(formTrick.category, { 'label': 'Catégorie' }) }}
 
+<h3>Images</h3>
+    <button type="button" class="add_item_link" data-collection-holder-class="pictures">Ajouter une image</button>
+
+        {% for picture in formTrick.pictures %}
+            <li>{{ form_row(picture.link, {'label': 'Image'}) }}</li>
+        {% endfor %}
+    </ul>
+
 <button type="submit" class="btn btn-success">
 {% if editMode %}
-Enregistrer
+Modifier
 {% else %}
-Ajouter la figure</button>
+Ajouter </button>
 {% endif %}
 
 

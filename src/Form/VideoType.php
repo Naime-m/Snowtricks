@@ -13,7 +13,6 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('link')
-            ->add('trick')
         ;
     }
 

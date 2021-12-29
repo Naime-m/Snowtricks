@@ -13,7 +13,6 @@ class PictureType extends AbstractType
     {
         $builder
             ->add('link')
-            ->add('trick')
         ;
     }
 

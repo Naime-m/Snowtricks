@@ -37,7 +37,7 @@ class BlogController extends AbstractController
      * @Route("/trick/new", name= "trick_new")
      * @Route("/trick/{id}/edit", name="trick_edit")
      */
-    public function new(Trick $trick, Request $request, ManagerRegistry $entityManager): Response
+    public function new(Trick $trick = null, Request $request, ManagerRegistry $entityManager): Response
     {
         if (!$trick) {
             $trick = new Trick();
@@ -54,6 +54,7 @@ class BlogController extends AbstractController
 
             $manager = $entityManager->getManager();
             $manager->persist($trick);
+
             $manager->flush();
 
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
