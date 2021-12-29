@@ -22,8 +22,28 @@ class Picture
      */
     private $link;
 
+    public function getLink(): string
+    {
+        return $this->link;
+    }
+
+    public function setLink(string $link): void
+    {
+        $this->link = $link;
+    }
+
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="pictures")
      */
     private $trick;
+
+    public function getTrick(): string
+    {
+        return $this->trick;
+    }
+
+    public function setTrick($trick): void
+    {
+        $this->trick = $trick;
+    }
 }
