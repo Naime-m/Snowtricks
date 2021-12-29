@@ -110,6 +110,7 @@ class Trick
         return $this->pictures;
     }
 
+    // ne supprimer que les images qui n'ont pas d'id (id === null)
     public function deleteAllPictures()
     {
         $this->pictures = new ArrayCollection();
