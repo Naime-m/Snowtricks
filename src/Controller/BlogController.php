@@ -84,6 +84,19 @@ class BlogController extends AbstractController
     }
 
     /**
+     * @Route("/trick/{id}/delete", name="trick_delete")
+     */
+    public function delete(Trick $trick, ManagerRegistry $entityManager, int $id)
+    {
+        $trick = $entityManager->getRepository(Trick::class)->find($id);
+        $manager = $entityManager->getManager();
+        $manager->remove($trick);
+        $manager->flush();
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
      * @Route("/logout", name="app_logout", methods={"GET"})
      */
     public function logout(): void
