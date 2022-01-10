@@ -17,6 +17,10 @@ class Picture
      */
     private $id;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
     /**
      * @ORM\Column(type="text")
      */

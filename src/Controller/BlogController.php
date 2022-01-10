@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Picture;
 use App\Entity\Trick;
+use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class BlogController extends AbstractController
 {
@@ -29,10 +32,27 @@ class BlogController extends AbstractController
     /**
      * @Route("/trick/{id}/show", name="trick_show")
      */
-    public function show(Trick $trick)
+    public function show(Trick $trick, Request $request, UserInterface $user = null, ManagerRegistry $entityManager)
     {
-        return $this->render('blog/show.html.twig', [
+        $comment = new Comment();
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $name = $user->getUserIdentifier();
+            $comment->setDate(new \DateTime());
+            $comment->setTrick($trick);
+            $comment->setAuthor($name);
+            $manager = $entityManager->getManager();
+            $manager->persist($comment);
+            $manager->flush();
+        }
+
+        return $this->renderForm('blog/show.html.twig', [
             'trick' => $trick,
+            'comment' => $comment,
+            'formComment' => $form,
         ]);
     }
 

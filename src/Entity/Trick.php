@@ -35,12 +35,12 @@ class Trick
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", cascade={"persist","remove"})
      */
     private $pictures;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist","remove"})
      */
     private $videos;
 
@@ -113,7 +113,11 @@ class Trick
     // ne supprimer que les images qui n'ont pas d'id (id === null)
     public function deleteAllPictures()
     {
-        $this->pictures = new ArrayCollection();
+        foreach ($this->pictures as $key => $picture) {
+            if (null === $picture->getId()) {
+                $this->pictures->remove($key);
+            }
+        }
     }
 
     public function addPicture(Picture $picture): self
