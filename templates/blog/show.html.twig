@@ -6,7 +6,7 @@
 			<article>
            <h1>{{ trick.name }}</h1>
 		     {% for picture in trick.pictures %}
-			<img src="{{picture.link}}" alt="picture">
+			<img src="{{ asset(picture.link)}}" alt="picture">
 			{% endfor %} 
 				<div class="metadata"><p>Le {{ trick.date ? trick.date|date('d-m-Y à H:i:s')}}
 				 dans la catégorie {{trick.category}}</p></div>
