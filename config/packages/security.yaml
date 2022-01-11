@@ -27,6 +27,7 @@ security:
                 check_path: login
             logout:
                 path: app_logout
+                target: home
 
                 # where to redirect after logout
                 # target: app_any_route

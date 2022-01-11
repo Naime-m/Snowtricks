@@ -10,10 +10,6 @@
 				<a href="{{path ('trick_show', {'id': trick.id}) }}">
 					<h1>{{ trick.name }}</h1>
 				</a>
-				<img
-				src="http://placehold.it/200x100" alt="placeholder">
-			{# <div class="metadata">{{ trick.date ? trick.date|date('d-m-Y H:i:s') : '' }}</div>
-						                <div class="content">{{ trick.description }}</div> #}
 			</article>
 			<a href="{{path ('trick_edit', {'id': trick.id}) }}"><button type="button" class="btn btn-outline-primary">Modifier</button></a>
 			<a href="{{path ('trick_delete', {'id': trick.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce trick ?')"><button type="button" class="btn btn-outline-primary">Supprimer</button></a>

@@ -5,14 +5,18 @@
 		<section class="tricks">
 			<article>
            <h1>{{ trick.name }}</h1>
-		    <img src="http://placehold.it/350x250" alt="placeholder">
-				<div class="metadata">{{ trick.date ? trick.date|date('d-m-Y H:i:s') : '' }}</div>
+		     {% for picture in trick.pictures %}
+			<img src="{{picture.link}}" alt="picture">
+			{% endfor %} 
+				<div class="metadata"><p>Le {{ trick.date ? trick.date|date('d-m-Y à H:i:s')}}
+				 dans la catégorie {{trick.category}}</p></div>
                 <div class="content">{{ trick.description }}</div>
 			</article>
 		</section>
 
-{% if is_granted ('ROLE_USER') %}
+
 	<h1>Espace de discussion</h1>
+	{% if is_granted ('ROLE_USER') %}
 		{{ form_start(formComment) }}
 	{{ form_row(formComment.content, {'label':'Commenter'}) }}
 	<button type="submit" class="btn btn-success">Commenter</button>
@@ -23,7 +27,8 @@
 		<section class="comments">
 		{% for comment in trick.comments %}
 		<div class="comment">
-		<div class="metadata"><p>Rédigé par {{comment.author}} le {{ comment.date ? comment.date|date('d-m-Y H:i:s') : '' }}</p></div>
+		<div class="metadata">
+		<p>Rédigé par {{comment.author}} le {{ comment.date ? comment.date|date('d-m-Y H:i:s') : '' }}</p></div>
 		<div class="content">{{comment.content}}</div>
 		<br>
 		</div>

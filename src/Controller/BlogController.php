@@ -24,8 +24,10 @@ class BlogController extends AbstractController
      */
     public function home(TrickRepository $trickRepository)
     {
+        $tricks = $trickRepository->findAll();
+
         return $this->render('blog/index.html.twig', [
-                'tricks' => $trickRepository->findAll(),
+                'tricks' => $tricks,
             ]);
     }
 
@@ -35,10 +37,10 @@ class BlogController extends AbstractController
     public function show(Trick $trick, Request $request, UserInterface $user = null, ManagerRegistry $entityManager)
     {
         $comment = new Comment();
+        $pictures = $trick->getPictures();
 
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $name = $user->getUserIdentifier();
             $comment->setDate(new \DateTime());
@@ -53,6 +55,7 @@ class BlogController extends AbstractController
             'trick' => $trick,
             'comment' => $comment,
             'formComment' => $form,
+            'pictures' => $pictures,
         ]);
     }
 
