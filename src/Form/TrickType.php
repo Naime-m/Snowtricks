@@ -28,6 +28,14 @@ class TrickType extends AbstractType
             'allow_delete' => true,
             'by_reference' => false,
         ]);
+
+        $builder->add('videos', CollectionType::class, [
+            'entry_type' => VideoType::class,
+            'entry_options' => ['label' => false],
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

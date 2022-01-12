@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Picture;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
@@ -89,6 +90,12 @@ class BlogController extends AbstractController
                     $pict->setLink($pictureFileName);
                     $pict->setTrick($trick);
                     $trick->addPicture($pict);
+                }
+
+                $videos = $form->get('videos');
+                foreach ($videos as $key => $video) {
+                    $video = new Video();
+                    $video->setTrick($trick);
                 }
             }
 

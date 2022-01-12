@@ -9,6 +9,7 @@ twig:
 
 ALT+Z to break lines
 CTRL+D multiple cursor
+SHIFT+ALT+F to format document
 
 Pour importer automatiquement une classe :
 

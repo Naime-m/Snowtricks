@@ -110,7 +110,6 @@ class Trick
         return $this->pictures;
     }
 
-    // ne supprimer que les images qui n'ont pas d'id (id === null)
     public function deleteAllPictures()
     {
         foreach ($this->pictures as $key => $picture) {
@@ -148,6 +147,15 @@ class Trick
     public function getVideos(): Collection
     {
         return $this->videos;
+    }
+
+    public function deleteAllVideos()
+    {
+        foreach ($this->videos as $key => $video) {
+            if (null === $video->getId()) {
+                $this->videos->remove($key);
+            }
+        }
     }
 
     public function addVideo(Video $video): self
