@@ -9,7 +9,7 @@
 				<img src="{{ asset(picture.link)}}" alt="picture">
 			{% endfor %}
 			{% for video in trick.videos %}
-				{{video.link}}
+			{{video.link | raw }}
 			{% endfor %}
 			<div class="metadata">
 				<p>Le

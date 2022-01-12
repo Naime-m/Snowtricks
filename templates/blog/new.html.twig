@@ -29,7 +29,7 @@
 	<h3>Vidéos</h3>
 
 <ul class="videos" data-index="{{ formTrick.videos|length > 0 ? formTrick.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(formTrick.videos.vars.prototype)|e('html_attr') }}">
-		{% for picture in formTrick.videos %}
+		{% for video in formTrick.videos %}
 			<li>{{ form_row(video.link, {'label': 'Video'}) }}</li>
 		{% endfor %}
 	</ul>
