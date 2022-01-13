@@ -8,7 +8,9 @@
 		{% for trick in tricks %}
 			<article>
 				<a href="{{path ('trick_show', {'id': trick.id}) }}">
-					<h1>{{ trick.name }}</h1>
+				{% for picture in trick.pictures |slice(0, 1) %}
+				<img src="{{ asset(picture.link)}}" alt="picture"><h1>{{ trick.name }}</h1>
+				{% endfor %}
 				</a>
 			</article>
 			<a href="{{path ('trick_edit', {'id': trick.id}) }}"><button type="button" class="btn btn-outline-primary">Modifier</button></a>

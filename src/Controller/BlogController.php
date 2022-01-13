@@ -26,9 +26,13 @@ class BlogController extends AbstractController
     public function home(TrickRepository $trickRepository)
     {
         $tricks = $trickRepository->findAll();
+        foreach ($tricks as $key => $trick) {
+            $pictures = $trick->getPictures();
+        }
 
         return $this->render('blog/index.html.twig', [
                 'tricks' => $tricks,
+                'pictures' => $pictures,
             ]);
     }
 
