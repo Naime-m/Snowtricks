@@ -43,14 +43,12 @@ class BlogController extends AbstractController
     {
         $comment = new Comment();
         $pictures = $trick->getPictures();
-
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $name = $user->getUserIdentifier();
             $comment->setDate(new \DateTime());
             $comment->setTrick($trick);
-            $comment->setAuthor($name);
+            $comment->setAuthor($user);
             $manager = $entityManager->getManager();
             $manager->persist($comment);
             $manager->flush();
@@ -61,6 +59,7 @@ class BlogController extends AbstractController
             'comment' => $comment,
             'formComment' => $form,
             'pictures' => $pictures,
+            'user' => $user,
         ]);
     }
 

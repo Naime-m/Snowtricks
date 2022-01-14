@@ -35,8 +35,10 @@
 		{% for comment in trick.comments %}
 			<div class="comment">
 				<div class="metadata">
+				<img src="{{ asset(comment.author.picture)}}" alt="picture"  width="50" 
+     height="50">
 					<p>Rédigé par
-						{{comment.author}}
+						{{comment.author.username}}
 						le
 						{{ comment.date ? comment.date|date('d-m-Y H:i:s') : '' }}</p>
 				</div>
