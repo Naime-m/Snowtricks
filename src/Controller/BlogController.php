@@ -10,6 +10,7 @@ use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -73,6 +74,11 @@ class BlogController extends AbstractController
             $trick = new Trick();
         }
 
+        $originalPictures = new ArrayCollection();
+        foreach ($trick->getPictures() as $picture) {
+            $originalPictures->add($picture);
+        }
+
         $form = $this->createForm(TrickType::class, $trick);
 
         $form->handleRequest($request);
@@ -84,9 +90,22 @@ class BlogController extends AbstractController
             }
 
             $trick->deleteAllPictures();
+
+            /** @var Picture $picture */
+            foreach ($originalPictures as $picture) {
+                if (false === $trick->getPictures()->contains($picture)) {
+                    // remove the Task from the Tag
+                    $picture->setTrick(null);
+
+                    $entityManager->getManager()->persist($picture);
+
+                    // if you wanted to delete the Tag entirely, you can also do that
+                    // $entityManager->remove($tag);
+                }
+            }
             $pictures = $form->get('pictures');
             foreach ($pictures as $key => $picture) {
-                /** @var UploadedFile $pictureFile */
+                /* @var UploadedFile $pictureFile */
                 $pictureFile = $picture->get('link')->getData();
                 if ($pictureFile) {
                     $pictureFileName = $fileUploader->upload($pictureFile);
@@ -102,7 +121,6 @@ class BlogController extends AbstractController
                     $video->setTrick($trick);
                 }
             }
-
             $manager = $entityManager->getManager();
             $manager->persist($trick);
 
