@@ -27,13 +27,9 @@ class BlogController extends AbstractController
     public function home(TrickRepository $trickRepository)
     {
         $tricks = $trickRepository->findAll();
-        foreach ($tricks as $key => $trick) {
-            $pictures = $trick->getPictures();
-        }
 
         return $this->render('blog/index.html.twig', [
                 'tricks' => $tricks,
-                'pictures' => $pictures,
             ]);
     }
 
@@ -94,13 +90,9 @@ class BlogController extends AbstractController
             /** @var Picture $picture */
             foreach ($originalPictures as $picture) {
                 if (false === $trick->getPictures()->contains($picture)) {
-                    // remove the Task from the Tag
                     $picture->setTrick(null);
 
                     $entityManager->getManager()->persist($picture);
-
-                    // if you wanted to delete the Tag entirely, you can also do that
-                    // $entityManager->remove($tag);
                 }
             }
             $pictures = $form->get('pictures');
