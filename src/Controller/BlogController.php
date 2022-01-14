@@ -81,6 +81,7 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$trick->getId()) {
                 $trick->setDate(new \DateTime());
+                $this->addFlash('success', 'La figure a bien été ajoutée !');
             }
 
             $trick->deleteAllPictures();
@@ -108,7 +109,7 @@ class BlogController extends AbstractController
 
             $manager->flush();
 
-            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+            return $this->redirectToRoute('home');
         }
 
         return $this->renderForm('blog/new.html.twig', [
