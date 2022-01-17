@@ -57,7 +57,6 @@ class BlogController extends AbstractController
             'formComment' => $form,
             'pictures' => $pictures,
             'user' => $user,
-            'slug' => $trick->getName(),
         ]);
     }
 
@@ -125,7 +124,6 @@ class BlogController extends AbstractController
         return $this->renderForm('blog/new.html.twig', [
         'formTrick' => $form,
         'editMode' => null !== $trick->getId(),
-        'slug' => $trick->getName(),
         ]);
     }
 
@@ -139,9 +137,7 @@ class BlogController extends AbstractController
         $manager->remove($trick);
         $manager->flush();
 
-        return $this->redirectToRoute('home', [
-            'slug' => $trick->getName(),
-        ]);
+        return $this->redirectToRoute('home');
     }
 
     /**
