@@ -34,7 +34,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/trick/{id}/show", name="trick_show")
+     * @Route("/trick/{id}/{slug}/show", name="trick_show")
      */
     public function show(Trick $trick, Request $request, UserInterface $user = null, ManagerRegistry $entityManager)
     {
@@ -57,12 +57,13 @@ class BlogController extends AbstractController
             'formComment' => $form,
             'pictures' => $pictures,
             'user' => $user,
+            'slug' => $trick->getName(),
         ]);
     }
 
     /**
      * @Route("/trick/new", name= "trick_new")
-     * @Route("/trick/{id}/edit", name="trick_edit")
+     * @Route("/trick/{id}/{slug}/edit", name="trick_edit")
      */
     public function new(Trick $trick = null, Request $request, ManagerRegistry $entityManager, FileUploader $fileUploader): Response
     {
@@ -124,11 +125,12 @@ class BlogController extends AbstractController
         return $this->renderForm('blog/new.html.twig', [
         'formTrick' => $form,
         'editMode' => null !== $trick->getId(),
+        'slug' => $trick->getName(),
         ]);
     }
 
     /**
-     * @Route("/trick/{id}/delete", name="trick_delete")
+     * @Route("/trick/{id}/{slug}/delete", name="trick_delete")
      */
     public function delete(Trick $trick, ManagerRegistry $entityManager, int $id)
     {
@@ -137,7 +139,9 @@ class BlogController extends AbstractController
         $manager->remove($trick);
         $manager->flush();
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('home', [
+            'slug' => $trick->getName(),
+        ]);
     }
 
     /**
