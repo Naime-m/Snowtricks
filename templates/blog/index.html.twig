@@ -6,29 +6,29 @@
 
 	<section class="d-flex flex-wrap">
 		{% for trick in tricks %}
-			<article>
-				<a
-					href="{{path ('trick_show', {'id':trick.id,'slug': trick.name}) }}">
+			<div class="col-sm-8 col-md-8 col-lg-2">
 
 					{% set picture = trick.pictures | first %}
 
 					{% if picture %}
-						<img src="{{ asset(picture.link)}}" class="img-thumbnail" alt="picture"><h1>{{ trick.name }}</h1>
+						<img src="{{ asset(picture.link)}}" class="img-thumbnail" alt="picture" width="200" height="200"><h1>{{ trick.name }}
+						<div class="trick buttons">
+					<a href="{{path ('trick_show', {'id':trick.id,'slug': trick.name}) }}">
+
+						{% if is_granted ('ROLE_USER') %}
+							<a href="{{path ('trick_edit', {'id': trick.id, 'slug': trick.name}) }}">
+								<button type="button" class="btn btn-outline-primary">Modifier</button>
+							</a>
+							<a href="{{path ('trick_delete', {'id': trick.id, 'slug': trick.name}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce trick ?')">
+								<button type="button" class="btn btn-outline-primary">Supprimer</button>
+							</a>
+						{% endif %}
+					</div></h1>
 					{% else %}
 						<img src="https://cdn.pixabay.com/photo/2021/08/12/10/38/mountains-6540497_960_720.jpg" alt="picture" width="200" height="200"><h1>{{ trick.name }}</h1>
 					{% endif %}
 
-				</a>
-			</article>
-			{% if is_granted ('ROLE_USER') %}
-			<a href="{{path ('trick_edit', {'id': trick.id, 'slug': trick.name}) }}">
-				<button type="button" class="btn btn-outline-primary">Modifier</button>
-			</a>
-			<a href="{{path ('trick_delete', {'id': trick.id, 'slug': trick.name}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce trick ?')">
-				<button type="button" class="btn btn-outline-primary">Supprimer</button>
-			</a>
-			{% endif %}
-
+				</div>
 		{% endfor %}
 	</section>
 
