@@ -16,24 +16,25 @@
 					{% endfor %}
 
 					{% for video in trick.videos %}
-						
 						<div class="embed-responsive embed-responsive-16by9">
 							{{video.link | raw }}
 						</div>
-
 					{% endfor %}
+
 				</div>
-				
 			</div>
-		</div>
-	<div class="metadata">
+			<div class="metadata">
 				<p>Le
 					{{ trick.date ? trick.date|date('d-m-Y à H:i:s')}}
 					dans la catégorie
 					{{trick.category}}</p>
 			</div>
 			<div class="content">{{ trick.description }}</div>
-			
+		</div>
+
+	</article>
+
+	<article>
 		<div class="d-none d-lg-block">
 			{% for picture in trick.pictures %}
 				<img src="{{ asset(picture.link)}}" alt="picture">
@@ -44,8 +45,6 @@
 					{{video.link | raw }}
 				</div>
 			{% endfor %}
-
-
 			<div class="metadata">
 				<p>Le
 					{{ trick.date ? trick.date|date('d-m-Y à H:i:s')}}
@@ -53,52 +52,53 @@
 					{{trick.category}}</p>
 			</div>
 			<div class="content">{{ trick.description }}</div>
-		</article>
+		</div>
+	</article>
 
 
-		<h1>Espace de discussion</h1>
-		{% if is_granted ('ROLE_USER') %}
-			{{ form_start(formComment) }}
-			{{ form_row(formComment.content, {'label':'Commenter'}) }}
-			<button type="submit" class="btn btn-success">Commenter</button>
-			{{form_end(formComment)}}
-		{% endif %}
+	<h1>Espace de discussion</h1>
+	{% if is_granted ('ROLE_USER') %}
+		{{ form_start(formComment) }}
+		{{ form_row(formComment.content, {'label':'Commenter'}) }}
+		<button type="submit" class="btn btn-success">Commenter</button>
+		{{form_end(formComment)}}
+	{% endif %}
 
 
-		<section class="comments">
-			{% for comment in trick.comments %}
-				<div class="comment">
-					<div class="metadata">
-						<img src="{{ asset(comment.author.picture)}}" alt="picture" width="50" height="50">
-						<p>Rédigé par
-							{{comment.author.username}}
-							le
-							{{ comment.date ? comment.date|date('d-m-Y H:i:s') : '' }}</p>
-					</div>
-					<div class="content">{{comment.content}}</div>
-					<br>
+	<section class="comments">
+		{% for comment in trick.comments %}
+			<div class="comment">
+				<div class="metadata">
+					<img src="{{ asset(comment.author.picture)}}" alt="picture" width="50" height="50">
+					<p>Rédigé par
+						{{comment.author.username}}
+						le
+						{{ comment.date ? comment.date|date('d-m-Y H:i:s') : '' }}</p>
 				</div>
-			{% endfor %}
+				<div class="content">{{comment.content}}</div>
+				<br>
+			</div>
+		{% endfor %}
 
 
-			<ul class="pagination">
-				<li class="page-item">
-					<a class="page-link" href="#">Previous</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="#">1</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="#">2</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="#">3</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="#">Next</a>
-				</li>
-			</ul>
-		</section>
+		<ul class="pagination">
+			<li class="page-item">
+				<a class="page-link" href="#">Previous</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" href="#">1</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" href="#">2</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" href="#">3</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" href="#">Next</a>
+			</li>
+		</ul>
+	</section>
 
 
-	{% endblock %}
+{% endblock %}
