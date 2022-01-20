@@ -6,6 +6,7 @@
 parameters:
     app.MAILER_SENDER: '%env(resolve:MAILER_SENDER)%'
     pictures_directory: '%kernel.project_dir%/public/uploads/pictures'
+    comment.page_size: 10
 
 
 services:

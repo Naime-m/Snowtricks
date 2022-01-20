@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,4 +49,49 @@ class CommentRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * Retrieve the list of active orders with all their actives packages.
+     *
+     * @return QueryBuilder
+     */
+    private function getCommentsQueryBuilder()
+    {
+        // Select the orders and their packages
+        $queryBuilder = $this->createQueryBuilder('c');
+
+        // Add WHERE clause
+        $queryBuilder->where('c.trick = 135');
+
+        //Return the QueryBuilder
+        return $queryBuilder;
+    }
+
+    /**
+     * Retrieve the list of active orders with all their actives packages.
+     *
+     * @param $page
+     *
+     * @return Paginator
+     */
+    public function getComments($page, Trick $trick, $pagesize)
+    {
+        $firstResult = ($page - 1) * $pagesize;
+
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->where('c.trick = :trickid');
+        $queryBuilder->setParameter('trickid', $trick->getId());
+
+        // Set the returned page
+        $queryBuilder->setFirstResult($firstResult);
+        $queryBuilder->setMaxResults($pagesize);
+
+        // Generate the Query
+        $query = $queryBuilder->getQuery();
+
+        // Generate the Paginator
+        $paginator = new Paginator($query, true);
+
+        return $paginator;
+    }
 }
