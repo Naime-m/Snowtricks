@@ -27,20 +27,16 @@ class BlogController extends AbstractController
     public function home(TrickRepository $trickRepository)
     {
         $tricks = $trickRepository->findAll();
-        foreach ($tricks as $key => $trick) {
-            $pictures = $trick->getPictures();
-        }
 
         return $this->render('blog/index.html.twig', [
                 'tricks' => $tricks,
-                'pictures' => $pictures,
             ]);
     }
 
     /**
-     * @Route("/trick/{id}/show", name="trick_show")
+     * @Route("/trick/{id}/{slug}/show/{page}", name="trick_show" , requirements={"page"="\d+"})
      */
-    public function show(Trick $trick, Request $request, UserInterface $user = null, ManagerRegistry $entityManager)
+    public function show(Trick $trick, Request $request, UserInterface $user = null, ManagerRegistry $entityManager, $page = 1)
     {
         $comment = new Comment();
         $pictures = $trick->getPictures();
@@ -54,6 +50,13 @@ class BlogController extends AbstractController
             $manager->persist($comment);
             $manager->flush();
         }
+        $pagesize = $this->getParameter('comment.page_size');
+        /** @var CommentRepository $commentrepo */
+        $commentrepo = $entityManager->getRepository(Comment::class);
+        $comments = $commentrepo->getComments($page, $trick, $pagesize);
+        // $comments = $this->CommentRepository->getComments(1);
+        $totalComments = count($comments);
+        $nbPage = ceil($totalComments / $pagesize);
 
         return $this->renderForm('blog/show.html.twig', [
             'trick' => $trick,
@@ -61,12 +64,31 @@ class BlogController extends AbstractController
             'formComment' => $form,
             'pictures' => $pictures,
             'user' => $user,
+            'comments' => $comments,
+            'totalcomments' => $totalComments,
+            'nbpage' => $nbPage,
         ]);
     }
 
     /**
+     * Do some work with paginated orders.
+     */
+    public function workWithOrder()
+    {
+        // Get the first page of orders
+        $paginatedResult = $this->orderRepository->getOrders(1);
+        // get the total number of orders
+        $totalOrder = count($paginatedResult);
+
+        // Use the Paginator iterator
+        foreach ($paginatedResult as $order) {
+            $order->doSomething();
+        }
+    }
+
+    /**
      * @Route("/trick/new", name= "trick_new")
-     * @Route("/trick/{id}/edit", name="trick_edit")
+     * @Route("/trick/{id}/{slug}/edit", name="trick_edit")
      */
     public function new(Trick $trick = null, Request $request, ManagerRegistry $entityManager, FileUploader $fileUploader): Response
     {
@@ -94,13 +116,9 @@ class BlogController extends AbstractController
             /** @var Picture $picture */
             foreach ($originalPictures as $picture) {
                 if (false === $trick->getPictures()->contains($picture)) {
-                    // remove the Task from the Tag
                     $picture->setTrick(null);
 
                     $entityManager->getManager()->persist($picture);
-
-                    // if you wanted to delete the Tag entirely, you can also do that
-                    // $entityManager->remove($tag);
                 }
             }
             $pictures = $form->get('pictures');
@@ -136,7 +154,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/trick/{id}/delete", name="trick_delete")
+     * @Route("/trick/{id}/{slug}/delete", name="trick_delete")
      */
     public function delete(Trick $trick, ManagerRegistry $entityManager, int $id)
     {

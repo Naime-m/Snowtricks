@@ -1,15 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+	<article>
+		<h1>{{ trick.name }}</h1>
+		<div class="d-lg-none">
+			<p>
+				<a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+					Afficher médias
+				</a>
+			</p>
+			<div class="collapse" id="collapseExample">
+				<div>
+					{% for picture in trick.pictures %}
+						<img src="{{ asset(picture.link)}}" alt="picture">
+					{% endfor %}
 
-	<section class="tricks">
-		<article>
-			<h1>{{ trick.name }}</h1>
+					{% for video in trick.videos %}
+						<div class="embed-responsive embed-responsive-16by9">
+							{{video.link | raw }}
+						</div>
+					{% endfor %}
+
+				</div>
+			</div>
+			<div class="metadata">
+				<p>Le
+					{{ trick.date ? trick.date|date('d-m-Y à H:i:s')}}
+					dans la catégorie
+					{{trick.category}}</p>
+			</div>
+			<div class="content">{{ trick.description }}</div>
+		</div>
+
+	</article>
+
+	<article>
+		<div class="d-none d-lg-block">
 			{% for picture in trick.pictures %}
 				<img src="{{ asset(picture.link)}}" alt="picture">
 			{% endfor %}
+
 			{% for video in trick.videos %}
-			{{video.link | raw }}
+				<div class="embed-responsive embed-responsive-16by9">
+					{{video.link | raw }}
+				</div>
 			{% endfor %}
 			<div class="metadata">
 				<p>Le
@@ -18,8 +52,8 @@
 					{{trick.category}}</p>
 			</div>
 			<div class="content">{{ trick.description }}</div>
-		</article>
-	</section>
+		</div>
+	</article>
 
 
 	<h1>Espace de discussion</h1>
@@ -32,11 +66,10 @@
 
 
 	<section class="comments">
-		{% for comment in trick.comments %}
+		{% for comment in comments %}
 			<div class="comment">
 				<div class="metadata">
-				<img src="{{ asset(comment.author.picture)}}" alt="picture"  width="50" 
-     height="50">
+					<img src="{{ asset(comment.author.picture)}}" alt="picture" width="50" height="50">
 					<p>Rédigé par
 						{{comment.author.username}}
 						le
@@ -46,6 +79,15 @@
 				<br>
 			</div>
 		{% endfor %}
+
+
+		<ul class="pagination">
+			{% for i in 1.. nbpage %}
+			<li class="page-item">
+				<a class="page-link" href="{{path('trick_show', {'id': trick.id, 'slug': trick.name, 'page': i})}}">{{ i }}</a>
+			</li>
+			{% endfor %}
+		</ul>
 	</section>
 
 
