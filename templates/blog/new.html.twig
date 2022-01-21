@@ -55,7 +55,7 @@
 	{% endif %}
 
 
-	{{ form_end(formTrick) }}
+	{{ form_end(formTrick,  {'render_rest': false}) }}
 	<script>
 		const addFormToCollection = (e) => {
 const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
