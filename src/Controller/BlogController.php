@@ -10,6 +10,7 @@ use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +44,9 @@ class BlogController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setDate(new \DateTime());
+            $datelocal = new DateTime('now');
+            $date = $datelocal->modify('+1 hour');
+            $comment->setDate($date);
             $comment->setTrick($trick);
             $comment->setAuthor($user);
             $manager = $entityManager->getManager();
@@ -107,7 +110,9 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$trick->getId()) {
-                $trick->setDate(new \DateTime());
+                $datelocal = new DateTime('now');
+                $date = $datelocal->modify('+1 hour');
+                $trick->setDate($date);
                 $this->addFlash('success', 'La figure a bien été ajoutée !');
             }
 

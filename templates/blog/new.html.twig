@@ -14,7 +14,8 @@
 	{{ form_row(formTrick.name, { 'label': 'Nom de la figure' }) }}
 	{{ form_row(formTrick.description) }}
 	{{ form_row(formTrick.category, { 'label': 'Catégorie' }) }}
-
+	
+	
 	<h3>Images</h3>
 
 
@@ -44,7 +45,7 @@
 		{% endfor %}
 	</ul>
 
-	<button type="button" class="add_item_link" data-collection-holder-class="videos">Ajouter une vidéo</button>
+	<button type="button" class="add_item_link" data-collection-holder-class="videos">Ajouter une vidéo</button></br>
 
 	<button type="submit" class="btn btn-success">
 		{% if editMode %}
@@ -53,6 +54,12 @@
 			Ajouter
 		</button>
 	{% endif %}
+
+	<style>.col-form-label{
+		display: none
+	}
+	
+	</style>
 
 
 	{{ form_end(formTrick) }}

@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
- * @UniqueEntity(fields={"name"}, message="Ce trick existe déjà")
+ * @UniqueEntity(fields={"name"}, message="Cette figure existe déjà")
  */
 class Trick
 {
