@@ -10,8 +10,8 @@ use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
+use App\Service\PictureUploader;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -29,9 +29,11 @@ class BlogController extends AbstractController
     {
         $tricks = $trickRepository->findAll();
 
-        return $this->render('blog/index.html.twig', [
+        return $this->render(
+            'blog/index.html.twig', [
                 'tricks' => $tricks,
-            ]);
+            ]
+        );
     }
 
     /**
@@ -39,6 +41,7 @@ class BlogController extends AbstractController
      */
     public function show(Trick $trick, Request $request, UserInterface $user = null, ManagerRegistry $entityManager, $page = 1)
     {
+        $pagesize = $this->getParameter('comment.page_size');
         $comment = new Comment();
         $pictures = $trick->getPictures();
         $form = $this->createForm(CommentType::class, $comment);
@@ -53,15 +56,17 @@ class BlogController extends AbstractController
             $manager->persist($comment);
             $manager->flush();
         }
-        $pagesize = $this->getParameter('comment.page_size');
-        /** @var CommentRepository $commentrepo */
+
+        /**
+         *  @var CommentRepository $commentrepo
+         * */
         $commentrepo = $entityManager->getRepository(Comment::class);
         $comments = $commentrepo->getComments($page, $trick, $pagesize);
-        // $comments = $this->CommentRepository->getComments(1);
         $totalComments = count($comments);
         $nbPage = ceil($totalComments / $pagesize);
 
-        return $this->renderForm('blog/show.html.twig', [
+        return $this->renderForm(
+            'blog/show.html.twig', [
             'trick' => $trick,
             'comment' => $comment,
             'formComment' => $form,
@@ -70,38 +75,18 @@ class BlogController extends AbstractController
             'comments' => $comments,
             'totalcomments' => $totalComments,
             'nbpage' => $nbPage,
-        ]);
+             ]
+        );
     }
 
     /**
-     * Do some work with paginated orders.
-     */
-    public function workWithOrder()
-    {
-        // Get the first page of orders
-        $paginatedResult = $this->orderRepository->getOrders(1);
-        // get the total number of orders
-        $totalOrder = count($paginatedResult);
-
-        // Use the Paginator iterator
-        foreach ($paginatedResult as $order) {
-            $order->doSomething();
-        }
-    }
-
-    /**
-     * @Route("/trick/new", name= "trick_new")
+     * @Route("/trick/new",              name= "trick_new")
      * @Route("/trick/{id}/{slug}/edit", name="trick_edit")
      */
     public function new(Trick $trick = null, Request $request, ManagerRegistry $entityManager, FileUploader $fileUploader): Response
     {
         if (!$trick) {
             $trick = new Trick();
-        }
-
-        $originalPictures = new ArrayCollection();
-        foreach ($trick->getPictures() as $picture) {
-            $originalPictures->add($picture);
         }
 
         $form = $this->createForm(TrickType::class, $trick);
@@ -116,19 +101,12 @@ class BlogController extends AbstractController
                 $this->addFlash('success', 'La figure a bien été ajoutée !');
             }
 
-            $trick->deleteAllPictures();
-
-            /** @var Picture $picture */
-            foreach ($originalPictures as $picture) {
-                if (false === $trick->getPictures()->contains($picture)) {
-                    $picture->setTrick(null);
-
-                    $entityManager->getManager()->persist($picture);
-                }
-            }
+            $pictureUploader = new PictureUploader();
+            $pictureUploader->upload($trick, $entityManager);
             $pictures = $form->get('pictures');
             foreach ($pictures as $key => $picture) {
-                /* @var UploadedFile $pictureFile */
+                /*
+                * @var UploadedFile $pictureFile */
                 $pictureFile = $picture->get('link')->getData();
                 if ($pictureFile) {
                     $pictureFileName = $fileUploader->upload($pictureFile);
@@ -152,10 +130,12 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->renderForm('blog/new.html.twig', [
-        'formTrick' => $form,
-        'editMode' => null !== $trick->getId(),
-        ]);
+        return $this->renderForm(
+            'blog/new.html.twig', [
+            'formTrick' => $form,
+            'editMode' => null !== $trick->getId(),
+            ]
+        );
     }
 
     /**
