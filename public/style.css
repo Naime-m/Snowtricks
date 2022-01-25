@@ -1,0 +1,23 @@
+body {
+    padding-bottom: 75px;
+}
+
+#btn-back-to-top {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    display: none;}
+
+.hero-image {
+    position: relative;
+    background: url('https://cdn.pixabay.com/photo/2021/08/12/10/38/mountains-6540497_960_720.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+}
+button.btn.btn-light {
+    position: absolute;
+right: 5px; bottom: 5px }
+
+.hi {
+    color:red;
+}
