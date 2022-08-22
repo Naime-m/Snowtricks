@@ -1,3 +1,7 @@
+#Snowtricks
+
+Sixième projet dans le cadre de ma formation de développeur PHP Symfony chez OpenClassrooms
+
 Pour installer le projet il faudra :
 
 1 ) Créer un fichier .env en se basant sur le fichier .env.example :
