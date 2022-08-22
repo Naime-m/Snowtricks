@@ -1,6 +1,8 @@
-#Snowtricks
+# Snowtricks
 
 Sixième projet dans le cadre de ma formation de développeur PHP Symfony chez OpenClassrooms
+
+Réalisation d'un site communautaire de snowboard sous le framework Symfony
 
 Pour installer le projet il faudra :
 
